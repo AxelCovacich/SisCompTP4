@@ -1,9 +1,8 @@
 obj-m += MyDriver.o
 
 all:
-	make -C /home/pi/linux-version-kernel/  M=$(PWD) modules
-	
-iPHONY:clean
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
 clean:
-	make -C /home/pi/linux-version-kernel/ M=$(PWD) clean
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
 
