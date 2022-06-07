@@ -27,7 +27,7 @@ MODULE_DESCRIPTION("Modulo que se encarga de sensar humedad y temperatura");
 #define NAME_DEVICE "sensor"
 
 
-static dev_t  dev_num;//contiene ambos numeros major y minor
+static dev_t  dev_num;      //contiene ambos numeros major y minor
 static struct cdev c_dev; 	// Global variable for the character device structure
 static struct class *cl; 	// Global variable for the device class
 static char channel = '0';
@@ -214,7 +214,7 @@ static int gpiomode_init(void)
 	/* el so elige el numero mayor del modulo*/
     if ((ret = alloc_chrdev_region(&dev_num, 0, 1, NAME_REGION)) < 0) return ret;
     
-    printk(KERN_INFO "Registro exitoso del modulo GPIO\n");
+    printk(KERN_INFO "Registro del driver de sensor exitoso! \n");
     printk(KERN_INFO "Major = %d Minor = %d \n", MAJOR(dev_num), MINOR(dev_num));
 
     /*Crea una clase en /sys/class*/
