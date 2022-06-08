@@ -26,8 +26,8 @@ temperatura = 0
 channel = 0
 time = 0
 
-line1, = ax1.plot([], [],'-' lw=3, color ='red') 
-line2, = ax2.plot([], [],'-' lw=3, color='red')
+line1, = ax1.plot([], [],'-', lw=3, color ='red') 
+line2, = ax2.plot([], [],'-',lw=3, color='red')
 line = [line1, line2]
 
 x_data, y1_data, y2_data  =[], [], []
