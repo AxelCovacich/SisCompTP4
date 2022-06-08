@@ -10,7 +10,7 @@ from datetime import datetime
 from matplotlib import pyplot
 from matplotlib.widgets import Button
 
-plt.style.use(['ggplot'])
+plt.style.use(['ggplot',''])
 
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(10,10))
 plt.subplots_adjust(bottom=0.13)
@@ -26,8 +26,8 @@ temperatura = 0
 channel = 0
 time = 0
 
-line1, = ax1.plot([], [], lw=7, color ='black') 
-line2, = ax2.plot([], [], lw=7, color='black')
+line1, = ax1.plot([], [], lw=5, color ='red') 
+line2, = ax2.plot([], [], lw=5, color='red')
 line = [line1, line2]
 
 x_data, y1_data, y2_data  =[], [], []
@@ -171,5 +171,7 @@ set_figure()
 #fig.tight_layout()
 
 animacion = animation.FuncAnimation(fig, graficar, interval=3000)
+
+plt.plot()
 
 plt.show()
