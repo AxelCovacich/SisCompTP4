@@ -14,7 +14,7 @@
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Ass eater and Maremariks");
-MODULE_DESCRIPTION("Modulo que se encarga de sensar humedad y temperatura");
+MODULE_DESCRIPTION("Sensor de humedad y temperatura");
 
 
 #define MAXTIMINGS  160
@@ -34,7 +34,7 @@ static char channel = '0';
 static int dht11_dat[5] = { 0, 0, 0, 0, 0 };
 static int PIN_READ_DHT=23;
 static int cont = 1;
-
+/*
 static int read_dht11_data(void)
 {
     uint8_t laststate   = HIGH;
@@ -43,21 +43,21 @@ static int read_dht11_data(void)
  
     dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0; 
     
-    /* Make a GPIO an output, and set its value at LOW */
+    // Make a GPIO an output, and set its value at LOW 
     gpio_direction_output(PIN_READ_DHT, LOW);
     
-    /* pull pin down for 18 milliseconds */
+    // pull pin down for 18 milliseconds 
    
-    usleep_range(18000,20000);
-    /* then pull it up for 40 microseconds */
+    //usleep_range(18000,20000);
+    // then pull it up for 40 microseconds 
     gpio_set_value(PIN_READ_DHT, HIGH);
     
     //usleep_range(20,40);
     udelay(40);
-    /* prepare to read the pin */
+    // prepare to read the pin
     gpio_direction_input(PIN_READ_DHT);
     
-    /* detect change and read data */
+    //detect change and read data 
     
     for (i = 0; i < MAXTIMINGS; i++)
     {
@@ -75,20 +75,21 @@ static int read_dht11_data(void)
  
         if (counter == 255)
             break;
- 
-        /* ignore first 3 transitions */
+        
+        // ignore first 3 transitions 
+        
         if ( (i >= 4) && (i % 2 == 0) )
         {
-            /* shove each bit into the storage bytes */
+            // shove each bit into the storage bytes 
             dht11_dat[j / 8] <<= 1;
             if ( counter > 16 )
                 dht11_dat[j / 8] |= 1;
             j++;
         }
     }
-    /*
-     * check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
-     * print it out if data is good */
+    
+     //* check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
+     //* print it out if data is good 
      
     if ((j >= 40) &&(dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF)))
     {
@@ -103,6 +104,7 @@ static int read_dht11_data(void)
         return 0;
     }
 }
+*/
 static int gpiomode_open(struct inode *i, struct file *f)
 {
     printk(KERN_INFO "se abrio el archivo sensor\n");
@@ -115,7 +117,7 @@ static int gpiomode_close(struct inode *i, struct file *f)
 }
 static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 {  
-
+    printk(KERN_INFO"Sensando\n");
     printk(KERN_INFO "se lee el archivo sensor\n");
    
     if (cont == 1)
@@ -128,7 +130,7 @@ static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_
 
         while (read_dht11_data() == 0)
         {
-            printk(KERN_INFO"Sensando\n");
+            
         }   
         
         memset(buff_aux,'\0',BUFF_LEN);
@@ -158,8 +160,7 @@ static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_
                 return 0;
         }  
 
-        printk(KERN_INFO "Buffer: %s",buff_aux);
-
+       
         if (len < length)
             length = len;
         
@@ -192,7 +193,7 @@ static ssize_t gpiomode_write(struct file *f, const char __user *buf, size_t len
  
     else
     {
-    	printk(KERN_INFO "valor de channel: %c",channel);
+    	printk(KERN_INFO "valor del canal: %c",channel);
         return len;
     }
 }
@@ -214,7 +215,7 @@ static int gpiomode_init(void)
 	/* el so elige el numero mayor del modulo*/
     if ((ret = alloc_chrdev_region(&dev_num, 0, 1, NAME_REGION)) < 0) return ret;
     
-    printk(KERN_INFO "Registro del driver de sensor exitoso! \n");
+    printk(KERN_INFO "Se ha registrado el driver correctamente. \n");
     printk(KERN_INFO "Major = %d Minor = %d \n", MAJOR(dev_num), MINOR(dev_num));
 
     /*Crea una clase en /sys/class*/
@@ -266,7 +267,7 @@ static void gpiomode_exit(void)
     unregister_chrdev_region(dev_num, 1);
     gpio_free(PIN_READ_DHT);
 
-    printk(KERN_INFO "Adios miguel y jorge\n");
+    printk(KERN_INFO "Se ha retirado el driver del kernel.\n");
 }
 
 module_init(gpiomode_init);
