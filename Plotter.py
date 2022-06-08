@@ -10,7 +10,7 @@ from datetime import datetime
 from matplotlib import pyplot
 from matplotlib.widgets import Button
 
-plt.style.use(['ggplot',''])
+plt.style.use(['ggplot'])
 
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(10,10))
 plt.subplots_adjust(bottom=0.13)
@@ -26,8 +26,8 @@ temperatura = 0
 channel = 0
 time = 0
 
-line1, = ax1.plot([], [], lw=5, color ='red') 
-line2, = ax2.plot([], [], lw=5, color='red')
+line1, = ax1.plot([], [],'-' lw=3, color ='red') 
+line2, = ax2.plot([], [],'-' lw=3, color='red')
 line = [line1, line2]
 
 x_data, y1_data, y2_data  =[], [], []
@@ -156,9 +156,9 @@ axbutton1 = plt.axes([0.25, 0.01, 0.1, 0.05]) #left bottom width heigth
 axbutton2 = plt.axes([0.677, 0.01, 0.1, 0.05])
 axbutton3 = plt.axes([0.45, 0.01, 0.1, 0.05])
 
-btn1 = Button(ax=axbutton1, label='Humidity', color='black', hovercolor='green')
-btn2 = Button(ax=axbutton2, label='Temperature', color='black', hovercolor='green')
-btn3 = Button(ax=axbutton3, label='Both', color='black', hovercolor='green')
+btn1 = Button(ax=axbutton1, label='Humidity', color='white', hovercolor='green')
+btn2 = Button(ax=axbutton2, label='Temperature', color='white', hovercolor='green')
+btn3 = Button(ax=axbutton3, label='Both', color='white', hovercolor='green')
 
 btn1.on_clicked(sensar_humedad)
 btn2.on_clicked(sensar_temperatura)
