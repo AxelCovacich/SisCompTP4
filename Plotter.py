@@ -170,6 +170,6 @@ set_figure()
 
 #fig.tight_layout()
 
-animacion = animation.FuncAnimation(fig, graficar, interval=1000,repeat=True,repeat_delay= 100) #dibuja cada 1 seg
+animacion = animation.FuncAnimation(fig, graficar, interval=3000)
 
 plt.show()
