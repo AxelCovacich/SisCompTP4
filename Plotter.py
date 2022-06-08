@@ -152,13 +152,13 @@ def sensar_ambos(event):
     file.close()
     
 
-axbutton1 = plt.axes([0.30, 0.90, 0.05, 0.05]) #left bottom width heigth
+axbutton1 = plt.axes([0.27, 0.90, 0.05, 0.05]) #left bottom width heigth
 axbutton2 = plt.axes([0.7, 0.90, 0.05, 0.05])
-axbutton3 = plt.axes([0.5, 0.90, 0.05, 0.05])
+axbutton3 = plt.axes([0.46, 0.92, 0.05, 0.05])
 
-btn1 = Button(ax=axbutton1, label='H', color='white', hovercolor='green')
-btn2 = Button(ax=axbutton2, label='T', color='white', hovercolor='green')
-btn3 = Button(ax=axbutton3, label='T & H', color='white', hovercolor='green')
+btn1 = Button(ax=axbutton1, label='H',size=10, color='white', hovercolor='green')
+btn2 = Button(ax=axbutton2, label='T',size=10, color='white', hovercolor='green')
+btn3 = Button(ax=axbutton3, label='T & H',size=10, color='white', hovercolor='green')
 
 btn1.on_clicked(sensar_humedad)
 btn2.on_clicked(sensar_temperatura)
