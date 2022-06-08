@@ -114,7 +114,7 @@ def set_figure():
     ax1.tick_params(axis='both', which='major', labelsize=13)
     ax1.tick_params(axis='both', which='minor', labelsize=11)
     ax1.set_yticks(np.arange(0, 100, 5))
-    ax1.set_xticks(np.arange(0, 150, 10))
+    ax1.set_xticks(np.arange(0, 100, 10))
 
     ax2.set_title('Temperature sensor',fontdict={'color':'blue','weight':'bold','size' : 13}, pad=14)
     ax2.set_xlabel('Time[s]',fontdict={'color':'black','weight':'bold','size' : 9})
@@ -123,7 +123,7 @@ def set_figure():
     ax2.tick_params(axis='both', which='major', labelsize=13)
     ax2.tick_params(axis='both', which='minor', labelsize=11)
     ax2.set_yticks(np.arange(-2, 50, 5))
-    ax2.set_xticks(np.arange(0, 150, 10))
+    ax2.set_xticks(np.arange(0, 100, 10))
 
 def sensar_humedad(event):
     global channel
