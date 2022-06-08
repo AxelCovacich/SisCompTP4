@@ -107,18 +107,18 @@ static int read_dht11_data(void)
 
 static int gpiomode_open(struct inode *i, struct file *f)
 {
-    printk(KERN_INFO "se abrio el archivo sensor\n");
+    printk(KERN_INFO "Sensor file opened\n");
     return 0;
 }
 static int gpiomode_close(struct inode *i, struct file *f)
 {
-    printk(KERN_INFO "se cerro el archivo sensor\n");
+    printk(KERN_INFO "Sensor file closed\n");
     return 0;
 }
 static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 {  
-    printk(KERN_INFO"Sensando\n");
-    printk(KERN_INFO "se lee el archivo sensor\n");
+    printk(KERN_INFO"Sensing data\n");
+    printk(KERN_INFO "Reading file\n");
    
     if (cont == 1)
     {        
@@ -186,14 +186,14 @@ static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_
 }
 static ssize_t gpiomode_write(struct file *f, const char __user *buf, size_t len, loff_t *off)
 {
-    printk(KERN_INFO "se escribe el archivo sensor\n");
+    printk(KERN_INFO "Writing file\n");
 
     if (copy_from_user(&channel,buf, len) != 0)
         return -EFAULT;
  
     else
     {
-    	printk(KERN_INFO "valor del canal: %c",channel);
+    	printk(KERN_INFO "Chanell: %c",channel);
         return len;
     }
 }
@@ -215,7 +215,7 @@ static int gpiomode_init(void)
 	/* el so elige el numero mayor del modulo*/
     if ((ret = alloc_chrdev_region(&dev_num, 0, 1, NAME_REGION)) < 0) return ret;
     
-    printk(KERN_INFO "Se ha registrado el driver correctamente. \n");
+    printk(KERN_INFO "Driver registered succesfully \n");
     printk(KERN_INFO "Major = %d Minor = %d \n", MAJOR(dev_num), MINOR(dev_num));
 
     /*Crea una clase en /sys/class*/
