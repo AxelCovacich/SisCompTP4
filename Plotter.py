@@ -105,9 +105,9 @@ def read_sensor():
 def set_figure():
     
     fig.set_size_inches(14,14)
-    fig.suptitle('Humidity-Temperature Sensor', fontsize=20 , color='blue')
+    #fig.suptitle('Humidity-Temperature Sensor', fontsize=20 , color='blue')
 
-    ax1.set_title('Humidity sensor',fontdict={'color':'blue','weight':'bold','size' : 13}, pad=14)
+    #ax1.set_title('Humidity sensor',fontdict={'color':'blue','weight':'bold','size' : 13}, pad=14)
     ax1.set_xlabel('Time[s]',fontdict={'color':'black','weight':'bold','size' : 9})
     ax1.set_ylabel('Humidity[%]',fontdict={'color':'black','weight':'bold','size' : 13})
      
@@ -116,7 +116,7 @@ def set_figure():
     ax1.set_yticks(np.arange(0, 100, 5))
     ax1.set_xticks(np.arange(0, 100, 10))
 
-    ax2.set_title('Temperature sensor',fontdict={'color':'blue','weight':'bold','size' : 13}, pad=14)
+    #ax2.set_title('Temperature sensor',fontdict={'color':'blue','weight':'bold','size' : 13}, pad=14)
     ax2.set_xlabel('Time[s]',fontdict={'color':'black','weight':'bold','size' : 9})
     ax2.set_ylabel('Temperature[°C]',fontdict={'color':'black','weight':'bold','size' : 13})
     
@@ -152,9 +152,9 @@ def sensar_ambos(event):
     file.close()
     
 
-axbutton1 = plt.axes([0.25, 0.01, 0.1, 0.05]) #left bottom width heigth
-axbutton2 = plt.axes([0.677, 0.01, 0.1, 0.05])
-axbutton3 = plt.axes([0.45, 0.01, 0.1, 0.05])
+axbutton1 = plt.axes([1.25, 0.01, 0.05, 0.05]) #left bottom width heigth
+axbutton2 = plt.axes([0.677, 0.01, 0.05, 0.05])
+axbutton3 = plt.axes([0.45, 0.01, 0.05, 0.05])
 
 btn1 = Button(ax=axbutton1, label='Humidity', color='white', hovercolor='green')
 btn2 = Button(ax=axbutton2, label='Temperature', color='white', hovercolor='green')
