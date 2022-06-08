@@ -114,13 +114,15 @@ static int sensor_close(struct inode *i, struct file *f)
     printk(KERN_INFO "Sensor file closed\n");
     return 0;
 }
+    /*Sensor_read lee "len" bytes, los guarda en "buf" y devuelve la cantidad leida,
+    que no puede ser mayor que len */
 static ssize_t sensor_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 {  
     printk(KERN_INFO "Reading file\n");
     if (cont == 1)
     {        
   
-        char buff_aux[BUFF_LEN];
+        char buff_aux[BUFF_LEN];                                            //Declaro un buffer con el tamaño de BUFF_LEN (80) 
         int length = 0;
         
          /* Se guarda el valor obtenido a buff_aux */
@@ -129,24 +131,24 @@ static ssize_t sensor_read(struct file *f, char __user *buf, size_t len, loff_t 
         {
         }   
         
-        memset(buff_aux,'\0',BUFF_LEN);
+        memset(buff_aux,'\0',BUFF_LEN);                                     //Cargo el buff_aux con 0
         switch (channel)
         {
             case '0': //Humedad 
                 
-                sprintf (buff_aux,"%d.%d", sensordata[0], sensordata[1]);
+                sprintf (buff_aux,"%d.%d", sensordata[0], sensordata[1]);   //Almaceno los datos de humedad en buff_aux
                 length = strlen (buff_aux);
                 break;
 
             case '1': // Temperatura
 
-                sprintf (buff_aux, "%d.%d", sensordata[2], sensordata[3]);            
+                sprintf (buff_aux, "%d.%d", sensordata[2], sensordata[3]);    //Almaceno los datos de temperatura en buff_aux        
                 length = strlen (buff_aux);
                 break;
 
             case '2': // Temperatura y humedad
 
-                sprintf (buff_aux, "%d.%d,%d.%d",sensordata[0], sensordata[1], sensordata[2], sensordata[3]);
+                sprintf (buff_aux, "%d.%d,%d.%d",sensordata[0], sensordata[1], sensordata[2], sensordata[3]); //Almaceno los datos de temperatura y humedad en buff_aux
                 length = strlen (buff_aux);
                 break;
 
@@ -164,7 +166,7 @@ static ssize_t sensor_read(struct file *f, char __user *buf, size_t len, loff_t 
         /* Se envia el valor al dispositivo de caracter */
         if (*off == 0)
         {
-            if (copy_to_user (buf, buff_aux, length) != 0)
+            if (copy_to_user (buf, buff_aux, length) != 0)                      //Le mando la data de buff_aux al usuario
                 return -EFAULT;
             
             else {
@@ -180,6 +182,7 @@ static ssize_t sensor_read(struct file *f, char __user *buf, size_t len, loff_t 
     cont = 1;
     return 0;
 }
+/*sensor_write() copia el valor pasado por el usuario (buf) en channel (kernel space)*/
 static ssize_t sensor_write(struct file *f, const char __user *buf, size_t len, loff_t *off)
 {
     printk(KERN_INFO "Writing sensor dev file\n");
