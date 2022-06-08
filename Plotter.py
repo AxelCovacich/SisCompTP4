@@ -1,6 +1,4 @@
 import numpy as np
-#import pip
-#pip.main(["install","matplotlib"])
 import matplotlib
 import matplotlib.pyplot as plt
 import random
@@ -15,14 +13,8 @@ plt.style.use(['seaborn-whitegrid'])
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(10,10))
 plt.subplots_adjust(bottom=0.13)
 
-DEVICE_FILE = "/dev/sensor"
-
-file = open(DEVICE_FILE, "w")
-file.write("0")
-file.close()
-
-humedad = 0
-temperatura = 0
+humidity = 0
+temperature = 0
 channel = 0
 time = 0
 
@@ -32,34 +24,40 @@ line = [line1, line2]
 
 x_data, y1_data, y2_data  =[], [], []
 
-def graficar(frame):
-    global humedad, temperatura
+DEVICE_FILE = "/dev/sensor"
 
-    if channel == 0: #sensa humedad
+file = open(DEVICE_FILE, "w")
+file.write("0")
+file.close()
 
-        humedad = read_sensor()
-        temperatura = 0
+def plotter(frame):
+    global humidity, temperature
+
+    if channel == 0: #sensa humidity
+
+        humidity = read_one_sensor()
+        temperature = 0
         x_data.append(time)
-        y1_data.append(humedad)
-        y2_data.append(temperatura)
-        print("Humedad: ",humedad , "%")
+        y1_data.append(humidity)
+        y2_data.append(temperature)
+        print("humidity: ",humidity , "%")
 
-    if channel == 1: # sensa temperatura 
+    if channel == 1: # sensa temperature 
 
-        temperatura = read_sensor()
-        humedad = 0
+        temperature = read_one_sensor()
+        humidity = 0
         x_data.append(time)
-        y1_data.append(humedad)
-        y2_data.append(temperatura)
-        print("Temperatura: ",temperatura , "°c")
+        y1_data.append(humidity)
+        y2_data.append(temperature)
+        print("temperature: ",temperature , "°c")
          
     if channel == 2: # sensa ambos canales
 
-        humedad, temperatura = read_ambos_Sensores()  
+        humidity, temperature = read_both_sensors()  
         x_data.append(time)
-        y1_data.append(humedad)
-        y2_data.append(temperatura)
-        print("Humedad: " , humedad , "% | Temperatura: ", temperatura, "°c")
+        y1_data.append(humidity)
+        y2_data.append(temperature)
+        print("humidity: " , humidity , "% | temperature: ", temperature, "°c")
 
     line[0].set_data(x_data, y1_data)    
     line[1].set_data(x_data, y2_data)    
@@ -67,7 +65,7 @@ def graficar(frame):
 
     return line
 
-def read_ambos_Sensores():
+def read_both_sensors():
     global time
 
     time += 3
@@ -83,15 +81,7 @@ def read_ambos_Sensores():
 
     return hum, temp
 
-
-#def generate_random_int():
-
- #   value_random = random.randint(-5, 5)
-
-  #  return value_random
-
-
-def read_sensor():
+def read_one_sensor():
     global time
 
     time += 3
@@ -125,7 +115,7 @@ def set_figure():
     ax2.set_yticks(np.arange(-2, 50, 5))
     ax2.set_xticks(np.arange(0, 100, 10))
 
-def sensar_humedad(event):
+def humidity_sensor(event):
     global channel
     channel = 0
     
@@ -134,7 +124,7 @@ def sensar_humedad(event):
     file.close()
     
 
-def sensar_temperatura(event):
+def temperature_sensor(event):
     global channel
     channel = 1
     
@@ -143,7 +133,7 @@ def sensar_temperatura(event):
     file.close()
     
 
-def sensar_ambos(event):
+def T_H_sensor(event):
     global channel
     channel = 2
 
@@ -160,16 +150,12 @@ btn1 = Button(ax=axbutton1, label='H', color='white', hovercolor='green')
 btn2 = Button(ax=axbutton2, label='T', color='white', hovercolor='green')
 btn3 = Button(ax=axbutton3, label='T & H', color='white', hovercolor='green')
 
-btn1.on_clicked(sensar_humedad)
-btn2.on_clicked(sensar_temperatura)
-btn3.on_clicked(sensar_ambos)
-
+btn1.on_clicked(humidity_sensor)
+btn2.on_clicked(temperature_sensor)
+btn3.on_clicked(T_H_sensor)
 
 set_figure()
 
-
-#fig.tight_layout()
-
-animacion = animation.FuncAnimation(fig, graficar, interval=3000)
+animacion = animation.FuncAnimation(fig, plotter, interval=3000)
 
 plt.show()

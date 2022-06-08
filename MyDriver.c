@@ -13,7 +13,7 @@
 #include <linux/proc_fs.h>
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Ass eater and Maremariks");
+MODULE_AUTHOR("Axel Covacich y Mateo Merino. UNC-Fcefyn");
 MODULE_DESCRIPTION("Sensor de humedad y temperatura");
 
 
@@ -31,38 +31,37 @@ static dev_t  dev_num;      //contiene ambos numeros major y minor
 static struct cdev c_dev; 	// Global variable for the character device structure
 static struct class *cl; 	// Global variable for the device class
 static char channel = '0';
-static int dht11_dat[5] = { 0, 0, 0, 0, 0 };
-static int PIN_READ_DHT=23;
+static int sensordata[5] = { 0, 0, 0, 0, 0 };
+static int SENSOR_PIN = 23;
 static int cont = 1;
 
-static int read_dht11_data(void)
+static int read_sensor_data(void)
 {
     uint8_t laststate   = HIGH;
     uint8_t counter     = 0;
     uint8_t j       = 0, i;
  
-    dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0; 
+    sensordata[0] = sensordata[1] = sensordata[2] = sensordata[3] = sensordata[4] = 0; 
     
     // Make a GPIO an output, and set its value at LOW 
-    gpio_direction_output(PIN_READ_DHT, LOW);
+    gpio_direction_output(SENSOR_PIN, LOW);
     
     // pull pin down for 18 milliseconds 
    
     usleep_range(18000,20000);
     // then pull it up for 40 microseconds 
-    gpio_set_value(PIN_READ_DHT, HIGH);
+    gpio_set_value(SENSOR_PIN, HIGH);
     
-    //usleep_range(20,40);
     udelay(40);
     // prepare to read the pin
-    gpio_direction_input(PIN_READ_DHT);
+    gpio_direction_input(SENSOR_PIN);
     
     //detect change and read data 
     
     for (i = 0; i < MAXTIMINGS; i++)
     {
         counter = 0;
-        while (gpio_get_value(PIN_READ_DHT) == laststate)
+        while (gpio_get_value(SENSOR_PIN) == laststate)
         {
             counter++;
             udelay(1);
@@ -71,7 +70,7 @@ static int read_dht11_data(void)
                 break;
             }
         }
-        laststate = gpio_get_value(PIN_READ_DHT);
+        laststate = gpio_get_value(SENSOR_PIN);
  
         if (counter == 255)
             break;
@@ -81,9 +80,9 @@ static int read_dht11_data(void)
         if ( (i >= 4) && (i % 2 == 0) )
         {
             // shove each bit into the storage bytes 
-            dht11_dat[j / 8] <<= 1;
+            sensordata[j / 8] <<= 1;
             if ( counter > 16 )
-                dht11_dat[j / 8] |= 1;
+                sensordata[j / 8] |= 1;
             j++;
         }
     }
@@ -91,10 +90,10 @@ static int read_dht11_data(void)
      // check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
      // print it out if data is good 
      
-    if ((j >= 40) &&(dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF)))
+    if ((j >= 40) &&(sensordata[4] == ((sensordata[0] + sensordata[1] + sensordata[2] + sensordata[3]) & 0xFF)))
     {
 	printk(KERN_INFO "Humidity = %d.%d %% Temperature = %d.%d °C \n",
-            dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3]);
+            sensordata[0], sensordata[1], sensordata[2], sensordata[3]);
 
         printk(KERN_INFO "Data OK\n");
         return 1;        
@@ -105,17 +104,17 @@ static int read_dht11_data(void)
     }
 }
 
-static int gpiomode_open(struct inode *i, struct file *f)
+static int sensor_open(struct inode *i, struct file *f)
 {
     printk(KERN_INFO "Sensor file opened\n");
     return 0;
 }
-static int gpiomode_close(struct inode *i, struct file *f)
+static int sensor_close(struct inode *i, struct file *f)
 {
     printk(KERN_INFO "Sensor file closed\n");
     return 0;
 }
-static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_t *off)
+static ssize_t sensor_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 {  
     printk(KERN_INFO "Reading file\n");
     if (cont == 1)
@@ -126,34 +125,34 @@ static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_
         
          /* Se guarda el valor obtenido a buff_aux */
         printk(KERN_INFO"Sensing data\n");
-        while (read_dht11_data() == 0)
+        while (read_sensor_data() == 0)
         {
         }   
         
         memset(buff_aux,'\0',BUFF_LEN);
         switch (channel)
         {
-            case '0': /* Sensar Humedad */
+            case '0': //Humedad 
                 
-                sprintf (buff_aux,"%d.%d", dht11_dat[0], dht11_dat[1]);
+                sprintf (buff_aux,"%d.%d", sensordata[0], sensordata[1]);
                 length = strlen (buff_aux);
                 break;
 
-            case '1': /* Sensar Temperatura */
+            case '1': // Temperatura
 
-                sprintf (buff_aux, "%d.%d", dht11_dat[2], dht11_dat[3]);            
+                sprintf (buff_aux, "%d.%d", sensordata[2], sensordata[3]);            
                 length = strlen (buff_aux);
                 break;
 
-            case '2': /* Sensar ambos */
+            case '2': // Temperatura y humedad
 
-                sprintf (buff_aux, "%d.%d,%d.%d",dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3]);
+                sprintf (buff_aux, "%d.%d,%d.%d",sensordata[0], sensordata[1], sensordata[2], sensordata[3]);
                 length = strlen (buff_aux);
                 break;
 
             default:
 
-                printk(KERN_INFO "opciones invalidas\n");
+                printk(KERN_INFO "Invalid Option\n");
                 return 0;
         }  
 
@@ -181,9 +180,9 @@ static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_
     cont = 1;
     return 0;
 }
-static ssize_t gpiomode_write(struct file *f, const char __user *buf, size_t len, loff_t *off)
+static ssize_t sensor_write(struct file *f, const char __user *buf, size_t len, loff_t *off)
 {
-    printk(KERN_INFO "Writing file\n");
+    printk(KERN_INFO "Writing sensor dev file\n");
 
     if (copy_from_user(&channel,buf, len) != 0)
         return -EFAULT;
@@ -198,13 +197,13 @@ static ssize_t gpiomode_write(struct file *f, const char __user *buf, size_t len
 static struct file_operations pugs_fops =
 {
     .owner = THIS_MODULE,
-    .open = gpiomode_open,
-    .release = gpiomode_close,
-    .read = gpiomode_read,
-    .write = gpiomode_write
+    .open = sensor_open,
+    .release = sensor_close,
+    .read = sensor_read,
+    .write = sensor_write
 };
 
-static int gpiomode_init(void)
+static int modulosensor_init(void)
 {
     int ret;
     struct device *dev_ret;
@@ -212,7 +211,7 @@ static int gpiomode_init(void)
 	/* el so elige el numero mayor del modulo*/
     if ((ret = alloc_chrdev_region(&dev_num, 0, 1, NAME_REGION)) < 0) return ret;
     
-    printk(KERN_INFO "Driver registered succesfully \n");
+    printk(KERN_INFO "Driver module registered succesfully \n");
     printk(KERN_INFO "Major = %d Minor = %d \n", MAJOR(dev_num), MINOR(dev_num));
 
     /*Crea una clase en /sys/class*/
@@ -245,27 +244,27 @@ que deben asociarse con el dispositivo (minor).
     }
 
 	/* reserva el pin para sensar la humedad y temperatura */
-	ret = gpio_request(PIN_READ_DHT, "sensor");
+	ret = gpio_request(SENSOR_PIN, "sensor");
 
 	if (ret)
 	{
-		printk(KERN_ERR "Unable to request GPIOs for PIN_READ_DHT: %d\n", ret);
+		printk(KERN_ERR "Unable to request GPIOs for SENSOR_PIN: %d\n", ret);
 	}
 
     return 0;
 
 }
 
-static void gpiomode_exit(void)
+static void modulosensor_exit(void)
 {
     cdev_del(&c_dev);
     device_destroy(cl, dev_num);
     class_destroy(cl);
     unregister_chrdev_region(dev_num, 1);
-    gpio_free(PIN_READ_DHT);
+    gpio_free(SENSOR_PIN);
 
-    printk(KERN_INFO "Se ha retirado el driver del kernel.\n");
+    printk(KERN_INFO "Removed sensor module from kernel.\n");
 }
 
-module_init(gpiomode_init);
-module_exit(gpiomode_exit);
+module_init(modulosensor_init);
+module_exit(modulosensor_exit);
