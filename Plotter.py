@@ -158,6 +158,6 @@ btn3.on_clicked(T_H_sensor)
 
 set_figure()
 
-animacion = animation.FuncAnimation(fig, plotter, interval=1000)
+animacion = animation.FuncAnimation(fig, plotter, interval=500)
 
 plt.show()
