@@ -70,7 +70,7 @@ def plotter(frame):
 def read_both_sensors():
     global time
 
-    time += 3
+    time += 1
 
     file = open(DEVICE_FILE,"r")
     value = file.read() 
@@ -86,7 +86,7 @@ def read_both_sensors():
 def read_one_sensor():
     global time
 
-    time += 3
+    time += 1
     file = open(DEVICE_FILE,"r")
     value = float(file.read()) 
     file.close()
@@ -158,6 +158,6 @@ btn3.on_clicked(T_H_sensor)
 
 set_figure()
 
-animacion = animation.FuncAnimation(fig, plotter, interval=3000)
+animacion = animation.FuncAnimation(fig, plotter, interval=1000)
 
 plt.show()
