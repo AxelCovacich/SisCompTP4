@@ -10,7 +10,7 @@ from datetime import datetime
 from matplotlib import pyplot
 from matplotlib.widgets import Button
 
-plt.style.use(['seaborn-bright'])
+plt.style.use(['seaborn-whitegrid'])
 
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(10,10))
 plt.subplots_adjust(bottom=0.13)
