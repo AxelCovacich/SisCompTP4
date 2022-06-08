@@ -152,9 +152,9 @@ def sensar_ambos(event):
     file.close()
     
 
-axbutton1 = plt.axes([0.25, 1.0, 0.05, 0.05]) #left bottom width heigth
-axbutton2 = plt.axes([0.677, 0.5, 0.05, 0.05])
-axbutton3 = plt.axes([0.45, 0.75, 0.05, 0.05])
+axbutton1 = plt.axes([0.25, 0.95, 0.05, 0.05]) #left bottom width heigth
+axbutton2 = plt.axes([0.677, 0.90, 0.05, 0.05])
+axbutton3 = plt.axes([0.45, 0.85, 0.05, 0.05])
 
 btn1 = Button(ax=axbutton1, label='H', color='white', hovercolor='green')
 btn2 = Button(ax=axbutton2, label='T', color='white', hovercolor='green')
