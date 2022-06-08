@@ -67,6 +67,7 @@ def plotter(frame):
 
     return line
 
+
 def read_both_sensors():
     global time
 
@@ -117,6 +118,13 @@ def set_figure():
     ax2.set_yticks(np.arange(-2, 50, 5))
     ax2.set_xticks(np.arange(0, 100, 10))
 
+#   humidity_sensor() | temperature_sensor() | T_H_sensor() 
+#   
+#   Son las funciones que se encargan de escribir en el file. Según que función
+#   se ejecute a través del boton presionado; se escribirá un "0", "1" o "2"
+#   indicándole al driver que debe sensar humedad, temperatura o los dos a la ves;
+#   respectivamente. 
+
 def humidity_sensor(event):
     global channel
     channel = 0
@@ -151,6 +159,8 @@ axbutton3 = plt.axes([0.46, 0.92, 0.05, 0.05])
 btn1 = Button(ax=axbutton1, label='H', color='white', hovercolor='green')
 btn2 = Button(ax=axbutton2, label='T', color='white', hovercolor='green')
 btn3 = Button(ax=axbutton3, label='T & H', color='white', hovercolor='green')
+
+# Según el botón que se presione; se ejecuta la función correspondiente
 
 btn1.on_clicked(humidity_sensor)
 btn2.on_clicked(temperature_sensor)
