@@ -84,11 +84,11 @@ def read_ambos_Sensores():
     return hum, temp
 
 
-def generate_random_int():
+#def generate_random_int():
 
-    value_random = random.randint(-5, 5)
+ #   value_random = random.randint(-5, 5)
 
-    return value_random
+  #  return value_random
 
 
 def read_sensor():
