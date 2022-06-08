@@ -34,7 +34,7 @@ static char channel = '0';
 static int dht11_dat[5] = { 0, 0, 0, 0, 0 };
 static int PIN_READ_DHT=23;
 static int cont = 1;
-/*
+
 static int read_dht11_data(void)
 {
     uint8_t laststate   = HIGH;
@@ -104,7 +104,7 @@ static int read_dht11_data(void)
         return 0;
     }
 }
-*/
+
 static int gpiomode_open(struct inode *i, struct file *f)
 {
     printk(KERN_INFO "se abrio el archivo sensor\n");
