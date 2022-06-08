@@ -10,9 +10,9 @@ from datetime import datetime
 from matplotlib import pyplot
 from matplotlib.widgets import Button
 
-plt.style.use(['ggplot','dark_background'])
+plt.style.use(['ggplot','white_background'])
 
-fig, (ax1, ax2) = plt.subplots(1,2,figsize=(12,12))
+fig, (ax1, ax2) = plt.subplots(1,2,figsize=(10,10))
 plt.subplots_adjust(bottom=0.13)
 
 DEVICE_FILE = "/dev/sensor"
@@ -26,8 +26,8 @@ temperatura = 0
 channel = 0
 time = 0
 
-line1, = ax1.plot([], [], lw=7, color ='r') 
-line2, = ax2.plot([], [], lw=7, color='r')
+line1, = ax1.plot([], [], lw=7, color ='black') 
+line2, = ax2.plot([], [], lw=7, color='black')
 line = [line1, line2]
 
 x_data, y1_data, y2_data  =[], [], []
@@ -105,23 +105,23 @@ def read_sensor():
 def set_figure():
     
     fig.set_size_inches(14,14)
-    fig.suptitle('Sensado de Temperatura-Humedad', fontsize=22 , color='red')
+    fig.suptitle('Humidity-Temperature Sensor', fontsize=20 , color='blue')
 
-    ax1.set_title('Sensor de humedad',fontdict={'color':'red','weight':'bold','size' : 14}, pad=14)
-    ax1.set_xlabel('Tiempo[s]',fontdict={'color':'white','weight':'bold','size' : 10})
-    ax1.set_ylabel('Humedad [%]',fontdict={'color':'white','weight':'bold','size' : 14})
+    ax1.set_title('Humidity sensor',fontdict={'color':'blue','weight':'bold','size' : 13}, pad=14)
+    ax1.set_xlabel('Time[s]',fontdict={'color':'black','weight':'bold','size' : 9})
+    ax1.set_ylabel('Humidity[%]',fontdict={'color':'black','weight':'bold','size' : 13})
      
-    ax1.tick_params(axis='both', which='major', labelsize=14)
-    ax1.tick_params(axis='both', which='minor', labelsize=12)
+    ax1.tick_params(axis='both', which='major', labelsize=13)
+    ax1.tick_params(axis='both', which='minor', labelsize=11)
     ax1.set_yticks(np.arange(0, 100, 5))
     ax1.set_xticks(np.arange(0, 150, 10))
 
-    ax2.set_title('Sensor de temperatura',fontdict={'color':'red','weight':'bold','size' : 14}, pad=14)
-    ax2.set_xlabel('Tiempo[s]',fontdict={'color':'white','weight':'bold','size' : 10})
-    ax2.set_ylabel('Temperatura [°C]',fontdict={'color':'white','weight':'bold','size' : 14})
+    ax2.set_title('Temperature sensor',fontdict={'color':'blue','weight':'bold','size' : 13}, pad=14)
+    ax2.set_xlabel('Time[s]',fontdict={'color':'black','weight':'bold','size' : 9})
+    ax2.set_ylabel('Temperature[°C]',fontdict={'color':'black','weight':'bold','size' : 13})
     
-    ax2.tick_params(axis='both', which='major', labelsize=14)
-    ax2.tick_params(axis='both', which='minor', labelsize=12)
+    ax2.tick_params(axis='both', which='major', labelsize=13)
+    ax2.tick_params(axis='both', which='minor', labelsize=11)
     ax2.set_yticks(np.arange(-2, 50, 5))
     ax2.set_xticks(np.arange(0, 150, 10))
 
@@ -156,9 +156,9 @@ axbutton1 = plt.axes([0.25, 0.01, 0.1, 0.05]) #left bottom width heigth
 axbutton2 = plt.axes([0.677, 0.01, 0.1, 0.05])
 axbutton3 = plt.axes([0.45, 0.01, 0.1, 0.05])
 
-btn1 = Button(ax=axbutton1, label='Sensar humedad', color='black', hovercolor='tomato')
-btn2 = Button(ax=axbutton2, label='Sensar temperatura', color='black', hovercolor='tomato')
-btn3 = Button(ax=axbutton3, label='Sensar ambos', color='black', hovercolor='tomato')
+btn1 = Button(ax=axbutton1, label='Humidity', color='black', hovercolor='green')
+btn2 = Button(ax=axbutton2, label='Temperature', color='black', hovercolor='green')
+btn3 = Button(ax=axbutton3, label='Both', color='black', hovercolor='green')
 
 btn1.on_clicked(sensar_humedad)
 btn2.on_clicked(sensar_temperatura)
