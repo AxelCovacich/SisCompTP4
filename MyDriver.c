@@ -88,8 +88,8 @@ static int read_dht11_data(void)
         }
     }
     
-     //* check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
-     //* print it out if data is good 
+     // check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
+     // print it out if data is good 
      
     if ((j >= 40) &&(dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF)))
     {
@@ -117,9 +117,7 @@ static int gpiomode_close(struct inode *i, struct file *f)
 }
 static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 {  
-    printk(KERN_INFO"Sensing data\n");
     printk(KERN_INFO "Reading file\n");
-   
     if (cont == 1)
     {        
   
@@ -127,10 +125,9 @@ static ssize_t gpiomode_read(struct file *f, char __user *buf, size_t len, loff_
         int length = 0;
         
          /* Se guarda el valor obtenido a buff_aux */
-
+        printk(KERN_INFO"Sensing data\n");
         while (read_dht11_data() == 0)
         {
-            
         }   
         
         memset(buff_aux,'\0',BUFF_LEN);
@@ -193,7 +190,7 @@ static ssize_t gpiomode_write(struct file *f, const char __user *buf, size_t len
  
     else
     {
-    	printk(KERN_INFO "Chanell: %c",channel);
+    	printk(KERN_INFO "Channel: %c",channel);
         return len;
     }
 }
