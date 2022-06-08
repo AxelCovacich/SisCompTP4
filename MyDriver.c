@@ -48,7 +48,7 @@ static int read_dht11_data(void)
     
     // pull pin down for 18 milliseconds 
    
-    //usleep_range(18000,20000);
+    usleep_range(18000,20000);
     // then pull it up for 40 microseconds 
     gpio_set_value(PIN_READ_DHT, HIGH);
     
