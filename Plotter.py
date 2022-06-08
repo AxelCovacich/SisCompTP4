@@ -13,6 +13,12 @@ plt.style.use(['seaborn-whitegrid'])
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(10,10))
 plt.subplots_adjust(bottom=0.13)
 
+DEVICE_FILE = "/dev/sensor"
+
+file = open(DEVICE_FILE, "w")
+file.write("0")
+file.close()
+
 humidity = 0
 temperature = 0
 channel = 0
@@ -24,11 +30,7 @@ line = [line1, line2]
 
 x_data, y1_data, y2_data  =[], [], []
 
-DEVICE_FILE = "/dev/sensor"
 
-file = open(DEVICE_FILE, "w")
-file.write("0")
-file.close()
 
 def plotter(frame):
     global humidity, temperature
